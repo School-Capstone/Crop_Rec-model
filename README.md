@@ -71,6 +71,11 @@ Before you begin, ensure you have the following prerequisites in place:
    ```
    pip install -r requirements.txt
    ```
+6. Run Prediction Server:
+   
+   ```
+   python -m uvicorn server:app --reload
+   ```
 
 ## Usage
 
