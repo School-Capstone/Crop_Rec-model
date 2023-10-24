@@ -49,7 +49,7 @@ Before you begin, ensure you have the following prerequisites in place:
 3. Create a virtual environment (optional but recommended):
 
    ```
-   python -m venv venv
+   python -m venv crops
    ```
 
 4. Activate the virtual environment:
@@ -57,13 +57,13 @@ Before you begin, ensure you have the following prerequisites in place:
    - For Windows:
 
      ```
-     venv\Scripts\activate
+     crops\Scripts\activate
      ```
 
    - For macOS and Linux:
 
      ```
-     source venv/bin/activate
+     source crops/bin/activate
      ```
 
 5. Install the required Python libraries:
