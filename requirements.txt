@@ -10,3 +10,5 @@ fastapi-sqlalchemy
 pydantic 
 alembic 
 psycopg2
+bcrypt
+python-dotenv

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class Predictions(BaseModel):
     id: int
     date: str
-    prediction: float
+    prediction: str
     actual: float
     error: float
     model: str
@@ -18,7 +18,7 @@ class Users(BaseModel):
     username: str
     password: str
     email: str
-    predictions: list[Predictions] = []
+    # predictions: list[Predictions] = []
 
     class Config:
         orm_mode = True  # This will allow the Pydantic model to accept ORM objects directly
