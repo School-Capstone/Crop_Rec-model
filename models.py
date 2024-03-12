@@ -8,7 +8,8 @@ Base = declarative_base()
 
 class Predictions(Base):
     __tablename__ = 'predictions'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))  # Add this line
     date = Column(DateTime, default=func.now())
     prediction = Column(Float)
     actual = Column(Float)
@@ -17,6 +18,7 @@ class Predictions(Base):
     model_type = Column(String(100))
     data = Column(String(100))
     data_source = Column(String(100))
+    user = relationship("Users", back_populates="predictions")
 
 
 class Users(Base):
