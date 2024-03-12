@@ -1,4 +1,3 @@
-
 # Crop Recommendation System using TensorFlow
 
 ## Project Overview
@@ -7,17 +6,20 @@ The Crop Recommendation System using TensorFlow is a machine learning project th
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Data](#data)
-- [Model Architecture](#model-architecture)
-- [Training](#training)
-- [Evaluation](#evaluation)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+- [Crop Recommendation System using TensorFlow](#crop-recommendation-system-using-tensorflow)
+  - [Project Overview](#project-overview)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Data](#data)
+  - [Model Architecture](#model-architecture)
+  - [Training](#training)
+  - [Evaluation](#evaluation)
+  - [Deployment](#deployment)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Getting Started
 
@@ -71,8 +73,31 @@ Before you begin, ensure you have the following prerequisites in place:
    ```
    pip install -r requirements.txt
    ```
-6. Run Prediction Server:
-   
+
+6. Create an environment file and add the following environment variables:
+
+   ```
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/croprecommender"
+   ```
+
+7. To setup the database, run the following command if it's your first time running the project please refer to the [This documentation](https://www.educative.io/answers/how-to-use-postgresql-database-in-fastapi) for more information on how to set up the database:
+
+   ```
+   alembic init alembic
+   ```
+
+8. Run migration to create the database:
+
+   ```
+   alembic revision --autogenerate -m "New Migration"
+   ```
+
+   ```
+   alembic upgrade head
+   ```
+
+9. Run Prediction Server:
+
    ```
    python -m uvicorn server:app --reload
    ```
