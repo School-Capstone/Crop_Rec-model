@@ -139,21 +139,6 @@ async def get():
     return HTMLResponse(html)
 
 
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: WebSocket):
-#     await websocket.accept()
-#     while True:
-#         data = await websocket.receive_text()
-#         try:
-#             input_data = model_input.parse_raw(data)
-#             input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
-#                           input_data.humidity, input_data.ph, input_data.rainfall]
-#             predict_crop = model.predict([input_list])
-#             prediction = predict_crop.tolist()
-#             await websocket.send_text(f"Prediction: {prediction[0]}")
-#         except Exception as e:
-#             await websocket.send_text(f"Error: {str(e)}")
-
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
