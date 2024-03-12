@@ -6,3 +6,9 @@ pypi-json
 scikit-learn
 requests
 websockets
+fastapi-sqlalchemy 
+pydantic 
+alembic 
+psycopg2
+bcrypt
+python-dotenv
