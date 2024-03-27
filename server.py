@@ -15,7 +15,8 @@ import bcrypt  # For hashing passwords
 
 app = FastAPI()
 
-app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
+app.add_middleware(DBSessionMiddleware,
+                   db_url="postgresql://postgres:password@db:5432/postgres")
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
