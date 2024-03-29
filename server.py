@@ -15,7 +15,8 @@ import bcrypt  # For hashing passwords
 
 app = FastAPI()
 
-app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
+app.add_middleware(DBSessionMiddleware,
+                   db_url="postgresql://postgres:password@db:5432/postgres")
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
@@ -78,7 +79,7 @@ html = """
         }
     </style>
     <script>
-        var socket = new WebSocket("ws://localhost:8000/ws");
+        var socket = new WebSocket("ws://0.0.0.0:80/ws");
 
         socket.onopen = function(event) {
             console.log("WebSocket connection established.");
