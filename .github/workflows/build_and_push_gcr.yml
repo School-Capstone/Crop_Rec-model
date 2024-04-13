@@ -30,7 +30,7 @@ jobs:
 
       - name: Configure Docker to use the gcloud command-line tool as a credential helper
         run: |
-          gcloud --quiet auth configure-docker
+          gcloud --quiet auth configure-docker ${{ env.LOCATION }}}
 
       - name: Build the Docker image
         run: |
