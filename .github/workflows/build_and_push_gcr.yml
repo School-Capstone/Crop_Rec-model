@@ -15,6 +15,10 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,14 +32,14 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
       - name: Configure Docker to use the gcloud command-line tool as a credential helper
         run: |
           gcloud --quiet auth configure-docker ${{ env.LOCATION }}}
 
-      - name: Build the Docker image
+      - name: Build and Push to GCR
         run: |
           docker build -t ${{ env.LOCATION }}/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-
-      - name: Push the Docker image to Google Cloud Container Registry (GCR)
-        run: |
           docker push ${{ env.LOCATION }}/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
