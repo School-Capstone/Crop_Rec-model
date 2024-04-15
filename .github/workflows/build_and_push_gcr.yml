@@ -1,4 +1,4 @@
-name: Docker Build and Push to GCR
+name: Docker Build, Push and Deploy to Cloud Run
 on:
   push:
     branches:
