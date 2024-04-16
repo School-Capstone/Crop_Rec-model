@@ -79,7 +79,7 @@ html = """
         }
     </style>
     <script>
-        var socket = new WebSocket("ws://localhost:80/ws");
+        var socket = new WebSocket("ws://0.0.0.0:80/ws");
 
         socket.onopen = function(event) {
             console.log("WebSocket connection established.");
