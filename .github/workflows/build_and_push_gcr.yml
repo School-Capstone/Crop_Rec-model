@@ -46,6 +46,10 @@ jobs:
         run: |
           curl -o cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.11.0/cloud-sql-proxy.linux.amd64
           chmod +x cloud-sql-proxy
+          ./cloud-sql-proxy --port 5432 premium-valor-418410:us-east1:test-instance
+          ./cloud-sql-proxy \
+          --credentials-file ${{ secrets.GCP_SA_KEY }} premium-valor-418410:us-east1:test-instance
+
           gcloud sql instances describe --project ${{ env.PROJECT_ID }} ${{ env.CLOUD_SQL_INSTANCE }}
 
       - name: Build the Docker image
