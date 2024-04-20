@@ -15,13 +15,13 @@ import bcrypt  # For hashing passwords
 
 app = FastAPI()
 
-DB_NAME = "croc-db"
+DB_NAME = "postgres"
 DB_USER = "postgres"
 DB_PASSWORD = "password"
-DB_HOST = "croc-db.c50cugi4gdw1.us-west-2.rds.amazonaws.com"
+DB_HOST = "35.227.44.19"
 
 app.add_middleware(DBSessionMiddleware,
-                   db_url=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+                   db_url=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}")
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
