@@ -15,8 +15,13 @@ import bcrypt  # For hashing passwords
 
 app = FastAPI()
 
+DB_NAME = "croc-db"
+DB_USER = "postgres"
+DB_PASSWORD = "password"
+DB_HOST = "croc-db.c50cugi4gdw1.us-west-2.rds.amazonaws.com"
+
 app.add_middleware(DBSessionMiddleware,
-                   db_url="postgresql://postgres:password@db:5432/postgres")
+                   db_url=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
@@ -79,7 +84,7 @@ html = """
         }
     </style>
     <script>
-        var socket = new WebSocket("wss://0.0.0.0:80/ws");
+        var socket = new WebSocket("wss://0.0.0.0:89/ws");
 
         socket.onopen = function(event) {
             console.log("WebSocket connection established.");

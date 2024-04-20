@@ -20,10 +20,16 @@ sys.path.append(BASE_DIR)
 # Access to the values within the .ini file in use.
 config = context.config
 
+DB_NAME = "croc-db"
+DB_USER = "postgres"
+DB_PASSWORD = "password"
+DB_HOST = "croc-db.c50cugi4gdw1.us-west-2.rds.amazonaws.com"
+
+
 #  Making a connection
 config.set_main_option(
     'sqlalchemy.url',
-    'postgresql://postgres:passwordl@db:5432/postgres')
+    f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
