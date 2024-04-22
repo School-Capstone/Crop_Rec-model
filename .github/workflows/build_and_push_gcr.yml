@@ -42,13 +42,6 @@ jobs:
         run: |
           gcloud --quiet auth configure-docker ${{ env.DOCKER_LOCATION }}
 
-      - name: Set up Gcloud proxy
-        run: |
-          curl -o cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.11.0/cloud-sql-proxy.linux.amd64
-          chmod +x cloud-sql-proxy
-          ./cloud_sql_proxy -instances=premium-valor-418410:us-east1:test-instance=tcp:5432 & sleep 5
-          gcloud sql instances describe --project ${{ env.PROJECT_ID }} ${{ env.CLOUD_SQL_INSTANCE }}
-
       - name: Build the Docker image
         run: |
           docker build -t ${{ env.DOCKER_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
