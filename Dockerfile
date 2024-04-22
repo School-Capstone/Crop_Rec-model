@@ -11,7 +11,7 @@ RUN curl -o cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/
 RUN chmod +x cloud-sql-proxy
 
 # Run Alembic migrations
-RUN alembic upgrade head
+# RUN alembic upgrade head
 
 CMD ./cloud_sql_proxy -instances=premium-valor-418410:us-east1:test-instance=tcp:5432 & sleep 5 && \
     alembic upgrade head && \
