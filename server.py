@@ -24,7 +24,7 @@ INSTANCE_UNIX_SOCKET = "/cloudsql/premium-valor-418410:us-east1:test-instance/.s
 
 app.add_middleware(
     DBSessionMiddleware,
-    db_url=f'postgresql+pg8000://{DB_USER}:{DB_PASSWORD}@/{DB_NAME}?unix_sock={INSTANCE_UNIX_SOCKET}/.s.PGSQL.5432'
+    db_url=f'postgresql//{DB_USER}:{DB_PASSWORD}@/{DB_NAME}?unix_sock={INSTANCE_UNIX_SOCKET}/.s.PGSQL.5432'
     )
 # NPK ,temperature ,humidity , ph ,rainfall
 
