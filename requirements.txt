@@ -13,3 +13,4 @@ psycopg2
 bcrypt
 python-dotenv
 pg8000
+google-cloud-sql
