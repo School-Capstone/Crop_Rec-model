@@ -20,9 +20,8 @@ DB_USER = "postgres"
 DB_PASSWORD = "password"
 DB_HOST = "35.227.44.19"
 
-app.add_middleware(DBSessionMiddleware,
-                   db_url=f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}")
-
+app.add_middleware(DBSessionMiddleware
+)
 # NPK ,temperature ,humidity , ph ,rainfall
 
 
