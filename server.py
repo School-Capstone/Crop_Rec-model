@@ -18,10 +18,14 @@ app = FastAPI()
 DB_NAME = "postgres"
 DB_USER = "postgres"
 DB_PASSWORD = "password"
-DB_HOST = "35.227.44.19"
+# DB_HOST = "35.227.44.19"
+INSTANCE_UNIX_SOCKET = "/cloudsql/premium-valor-418410:us-east1:test-instance/.s.PGSQL.5432"
 
-app.add_middleware(DBSessionMiddleware
-)
+
+app.add_middleware(
+    DBSessionMiddleware,
+    db_url=f'postgresql+pg8000://{DB_USER}:{DB_PASSWORD}@/{DB_NAME}?unix_sock={INSTANCE_UNIX_SOCKET}/.s.PGSQL.5432'
+    )
 # NPK ,temperature ,humidity , ph ,rainfall
 
 
