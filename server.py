@@ -24,7 +24,7 @@ DB_HOST = "db"
 
 app.add_middleware(
     DBSessionMiddleware,
-    db_url=f'postgresql//{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}')
+    db_url=f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}')
 # NPK ,temperature ,humidity , ph ,rainfall
 
 

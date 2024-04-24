@@ -30,7 +30,7 @@ DB_HOST = "db"
 #  Making a connection
 config.set_main_option(
     'sqlalchemy.url',
-    f'postgresql//{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}'
+    f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}'
 )
 
 # Interpret the config file for Python logging.
