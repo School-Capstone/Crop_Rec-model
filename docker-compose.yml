@@ -16,10 +16,10 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: croc-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      DATABASE_URL: postgresql://postgres:passwordl@db:5432/postgres
+      # DATABASE_URL: postgresql://postgres:password@croc-db.c50cugi4gdw1.us-west-2.rds.amazonaws.com:5432/croc-db
     ports:
       - "5432:5432"
     volumes:

@@ -12,3 +12,5 @@ alembic
 psycopg2
 bcrypt
 python-dotenv
+pg8000
+cloud-sql-python-connector
