@@ -23,14 +23,15 @@ config = context.config
 DB_NAME = "postgres"
 DB_USER = "postgres"
 DB_PASSWORD = "password"
-DB_HOST = "35.227.44.19"
+DB_HOST = "db"
 # DB_HOST = "croc-db.c50cugi4gdw1.us-west-2.rds.amazonaws.com"
 
 
 #  Making a connection
 config.set_main_option(
     'sqlalchemy.url',
-    'postgresql+pg8000://postgres:password@postgres?unix_sock=/cloudsql/premium-valor-418410:us-east1:test-instance/.s.PGSQL.5432')
+    f'postgresql//{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}'
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -99,10 +100,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-
-
-# curl -X PUT \
-# -H "Content-Type: application/json" \
-# -H "Authorization: Bearer dop_v1_da7efb2e2a9806b0a8fd08c2c55e79f9cba92fdd585d8287a7912be52d8dbc0e" \
-# -d '{"rules": [{"type": "ip_addr","value": "192.168.1.1"},{"type": "droplet","value": "414392895"},{"type": "k8s","value": "ff2a6c52-5a44-4b63-b99c-0e98e7a63d61"},{"type": "tag","value": "backend"}]}' \
-# "https://api.digitalocean.com/v2/databases/1ddb6425-4b01-4f8e-877c-951cdd867778/firewall"

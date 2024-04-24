@@ -7,39 +7,24 @@ from schema import Predictions as SchemaPredictions
 from models import Predictions as ModelPredictions
 import os
 from datetime import datetime
-import pg8000
 
-from google.cloud.sql.connector import Connector, IPTypes
 
 from models import Users  # Assuming you have a Users model defined in models.py
 # Assuming you have a function to create a database session in database.py
 import bcrypt  # For hashing passwords
 
 app = FastAPI()
-ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
-connector = Connector()
-
-
 
 
 DB_NAME = "postgres"
 DB_USER = "postgres"
 DB_PASSWORD = "password"
-# DB_HOST = "35.227.44.19"
-INSTANCE_UNIX_SOCKET = "/cloudsql/premium-valor-418410:us-east1:test-instance/.s.PGSQL.5432"
+DB_HOST = "db"
 
-conn: pg8000.dbapi.Connection = connector.connect(
-            "premium-valor-418410:us-east1:test-instance",
-            "pg8000",
-            user="postgres",
-            password="password",
-            db="postgres",
-            ip_type=ip_type,
-        )
+
 app.add_middleware(
     DBSessionMiddleware,
-    db_url=f'postgresql+pg8000://{conn}'
-    )
+    db_url=f'postgresql//{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}')
 # NPK ,temperature ,humidity , ph ,rainfall
 
 
