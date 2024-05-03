@@ -12,10 +12,16 @@ from datetime import datetime
 from models import Users  # Assuming you have a Users model defined in models.py
 # Assuming you have a function to create a database session in database.py
 import bcrypt  # For hashing passwords
+import re
 
 app = FastAPI()
 
-app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
+
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
+app.add_middleware(DBSessionMiddleware, db_url=os.environ[uri])
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
