@@ -20,8 +20,12 @@ sys.path.append(BASE_DIR)
 # Access to the values within the .ini file in use.
 config = context.config
 
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
 #  Making a connection
-config.set_main_option('sqlalchemy.url', os.environ['DATABASE_URL'])
+config.set_main_option('sqlalchemy.url', uri)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
