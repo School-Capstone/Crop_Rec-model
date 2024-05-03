@@ -21,7 +21,7 @@ uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.add_middleware(DBSessionMiddleware, db_url=os.environ[uri])
+app.add_middleware(DBSessionMiddleware, db_url=uri)
 
 # NPK ,temperature ,humidity , ph ,rainfall
 
