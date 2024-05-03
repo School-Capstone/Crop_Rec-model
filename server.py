@@ -86,7 +86,7 @@ html = """
         }
     </style>
     <script>
-        var socket = new WebSocket("ws://localhost:8000/ws");
+        var socket = new WebSocket("wss://croprecstaging-201b04c79344.herokuapp.com/ws");
 
         socket.onopen = function(event) {
             console.log("WebSocket connection established.");
