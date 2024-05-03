@@ -23,7 +23,6 @@ if uri.startswith("postgres://"):
 
 app.add_middleware(DBSessionMiddleware, db_url=uri)
 
-print("DATABASE_URL:", uri)
 
 # NPK ,temperature ,humidity , ph ,rainfall
 

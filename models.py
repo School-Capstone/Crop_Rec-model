@@ -11,12 +11,12 @@ class Predictions(Base):
     id = Column(Integer, primary_key=True, index=True)
     # user_id = Column(Integer, ForeignKey('users.id'))  # Add this line
     date = Column(DateTime, default=func.now())
-    prediction = Column(String(100))
+    prediction = Column(String(10000))
     actual = Column(Float)
     error = Column(Float)
     model = Column(String(100))
     model_type = Column(String(100))
-    data = Column(String(100))
+    data = Column(String(10000))
     data_source = Column(String(100))
     # user = relationship("Users", back_populates="predictions")
 
