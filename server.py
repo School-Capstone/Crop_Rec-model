@@ -203,3 +203,25 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(f"Prediction: {prediction}")
         except Exception as e:
             await websocket.send_text(f"Error: {str(e)}")
+
+@app.get("/predictions")
+async def get_predictions():
+    # Create a session context
+    with db():
+        # Query all predictions from the database
+        predictions = db.session.query(ModelPredictions).all()
+        # Serialize predictions into a dictionary
+        serialized_predictions = []
+        for prediction in predictions:
+            serialized_predictions.append({
+                "id": prediction.id,
+                "date": prediction.date,
+                "prediction": prediction.prediction,
+                "actual": prediction.actual,
+                "error": prediction.error,
+                "model": prediction.model,
+                "model_type": prediction.model_type,
+                "data": prediction.data,
+                "data_source": prediction.data_source
+            })
+        return serialized_predictions
