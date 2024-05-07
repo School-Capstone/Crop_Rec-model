@@ -38,7 +38,13 @@ class model_input(BaseModel):
 
 
 # loading the model
-model = pickle.load(open('./model/CropRecom_LogisticRegresion.pkl', 'rb'))
+# model = pickle.load(open('./model/CropRecom_LogisticRegresion.pkl', 'rb'))
+
+
+model_paths = {
+    "CropRecom_LogisticRegresion": "./model/CropRecom_LogisticRegresion.pkl",
+    "CropRecom_Classification": "./model/CropRecom_Classification.pkl"
+}
 
 html = """
 <html>
@@ -128,6 +134,10 @@ html = """
     <h1>WebSocket Client</h1>
     <p>Enter the input values to get the prediction</p>
     <div id="results"></div>
+    <select id="modelTypeInput">
+    <option value="CropRecom_LogisticRegresion">Crop Recommendation (Logistic Regression)</option>
+    <option value="CropRecom_Classification">Crop Recommendation (Classification)</option>
+</select>
     <input type="number" id="NInput" placeholder="Enter N">
     <input type="number" id="PInput" placeholder="Enter P">
     <input type="number" id="KInput" placeholder="Enter K">
@@ -153,13 +163,44 @@ async def get():
 #         data = await websocket.receive_text()
 #         try:
 #             input_data = model_input.parse_raw(data)
+#             input_object = {
+#                 "N": input_data.N,
+#                 "P": input_data.P,
+#                 "K": input_data.K,
+#                 "temperature": input_data.temperature,
+#                 "humidity": input_data.humidity,
+#                 "ph": input_data.ph,
+#                 "rainfall": input_data.rainfall
+#             }
 #             input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
 #                           input_data.humidity, input_data.ph, input_data.rainfall]
 #             predict_crop = model.predict([input_list])
-#             prediction = predict_crop.tolist()
-#             await websocket.send_text(f"Prediction: {prediction[0]}")
+#             prediction = predict_crop.tolist()[0]
+
+#             # Create a session context
+#             with db():
+#                 # Save the prediction to the database
+#                 new_prediction = ModelPredictions(
+#                     # user_id="current_user.id",
+#                     date=str(datetime.now()),
+#                     prediction=prediction,
+#                     actual=None,
+#                     error=None,
+#                     model="CropRecom_LogisticRegresion",
+#                     model_type="LogisticRegression_model",
+#                     data=str(input_object),
+#                     data_source="webapp"
+#                 )
+#                 db.session.add(new_prediction)
+#                 db.session.commit()
+
+#             await websocket.send_text(f"Prediction: {prediction}")
 #         except Exception as e:
 #             await websocket.send_text(f"Error: {str(e)}")
+
+
+# Set default model type
+DEFAULT_MODEL_TYPE = "CropRecom_Classification"
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -167,33 +208,32 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         try:
-            input_data = model_input.parse_raw(data)
-            input_object = {
-                "N": input_data.N,
-                "P": input_data.P,
-                "K": input_data.K,
-                "temperature": input_data.temperature,
-                "humidity": input_data.humidity,
-                "ph": input_data.ph,
-                "rainfall": input_data.rainfall
-            }
+            message = json.loads(data)
+            input_data = model_input.parse_obj(message["data"])
+            model_type = message.get("model_type", DEFAULT_MODEL_TYPE)
+
+            # Load the selected model
+            if model_type in model_paths:
+                with open(model_paths[model_type], 'rb') as model_file:
+                    model = pickle.load(model_file)
+            else:
+                raise ValueError("Invalid model type")
+
             input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
                           input_data.humidity, input_data.ph, input_data.rainfall]
             predict_crop = model.predict([input_list])
             prediction = predict_crop.tolist()[0]
 
-            # Create a session context
+            # Save prediction to the database
             with db():
-                # Save the prediction to the database
                 new_prediction = ModelPredictions(
-                    # user_id="current_user.id",
                     date=str(datetime.now()),
                     prediction=prediction,
                     actual=None,
                     error=None,
-                    model="CropRecom_LogisticRegresion",
+                    model=model_type,
                     model_type="LogisticRegression_model",
-                    data=str(input_object),
+                    data=str(input_data.dict()),
                     data_source="webapp"
                 )
                 db.session.add(new_prediction)
