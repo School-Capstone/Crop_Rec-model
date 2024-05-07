@@ -91,6 +91,13 @@ html = """
             border-radius: 5px;
             align-text: center;
         }
+        select {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+        }
     </style>
     <script>
         var socket = new WebSocket("wss://croprecstaging-201b04c79344.herokuapp.com/ws");
@@ -139,7 +146,7 @@ html = """
     <select id="modelTypeInput">
     <option value="CropRecom_LogisticRegresion">Crop Recommendation (Logistic Regression)</option>
     <option value="CropRecom_Classification">Crop Recommendation (Classification)</option>
-</select>
+    </select>
     <input type="number" id="NInput" placeholder="Enter N">
     <input type="number" id="PInput" placeholder="Enter P">
     <input type="number" id="KInput" placeholder="Enter K">
@@ -207,43 +214,49 @@ DEFAULT_MODEL_TYPE = "CropRecom_Classification"
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        try:
-            message = json.loads(data)
-            input_data = model_input.parse_obj(message["data"])
-            model_type = message.get("model_type", DEFAULT_MODEL_TYPE)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            try:
+                message = json.loads(data)
+                input_data = model_input.parse_obj(message["data"])
+                model_type = message.get("model_type", DEFAULT_MODEL_TYPE)
 
-            # Load the selected model
-            if model_type in model_paths:
-                with open(model_paths[model_type], 'rb') as model_file:
-                    model = pickle.load(model_file)
-            else:
-                raise ValueError("Invalid model type")
+                # Load the selected model
+                if model_type in model_paths:
+                    with open(model_paths[model_type], 'rb') as model_file:
+                        model = pickle.load(model_file)
+                else:
+                    raise ValueError("Invalid model type")
 
-            input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
-                          input_data.humidity, input_data.ph, input_data.rainfall]
-            predict_crop = model.predict([input_list])
-            prediction = predict_crop.tolist()[0]
+                input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
+                              input_data.humidity, input_data.ph, input_data.rainfall]
+                predict_crop = model.predict([input_list])
+                prediction = predict_crop.tolist()[0]
 
-            # Save prediction to the database
-            with db():
-                new_prediction = ModelPredictions(
-                    date=str(datetime.now()),
-                    prediction=prediction,
-                    actual=None,
-                    error=None,
-                    model=model_type,
-                    model_type="LogisticRegression_model",
-                    data=str(input_data.dict()),
-                    data_source="webapp"
-                )
-                db.session.add(new_prediction)
-                db.session.commit()
+                # Save prediction to the database
+                with db():
+                    new_prediction = ModelPredictions(
+                        date=str(datetime.now()),
+                        prediction=prediction,
+                        actual=None,
+                        error=None,
+                        model=model_type,
+                        model_type="LogisticRegression_model",
+                        data=str(input_data.dict()),
+                        data_source="webapp"
+                    )
+                    db.session.add(new_prediction)
+                    db.session.commit()
 
-            await websocket.send_text(f"Prediction: {prediction}")
-        except Exception as e:
-            await websocket.send_text(f"Error: {str(e)}")
+                await websocket.send_text(f"Prediction: {prediction}")
+            except Exception as e:
+                await websocket.send_text(f"Error: {str(e)}")
+    except WebSocketDisconnect:
+        # Handle WebSocket disconnection
+        print("Client disconnected")
+        # Perform any necessary cleanup or handle the disconnection
+        
 
 @app.get("/predictions")
 async def get_predictions():
