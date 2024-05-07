@@ -116,16 +116,18 @@ html = """
             console.log("WebSocket connection closed.");
         };
 
-        function sendMessage() {
-            var N = document.getElementById("NInput").value;
-            var P = document.getElementById("PInput").value;
-            var K = document.getElementById("KInput").value;
-            var temperature = document.getElementById("temperatureInput").value;
-            var humidity = document.getElementById("humidityInput").value;
-            var ph = document.getElementById("phInput").value;
-            var rainfall = document.getElementById("rainfallInput").value;
+function sendMessage() {
+        var N = parseFloat(document.getElementById("NInput").value);
+        var P = parseFloat(document.getElementById("PInput").value);
+        var K = parseFloat(document.getElementById("KInput").value);
+        var temperature = parseFloat(document.getElementById("temperatureInput").value);
+        var humidity = parseFloat(document.getElementById("humidityInput").value);
+        var ph = parseFloat(document.getElementById("phInput").value);
+        var rainfall = parseFloat(document.getElementById("rainfallInput").value);
+        var modelType = document.getElementById("modelTypeInput").value;
 
-            var message = JSON.stringify({
+        var message = JSON.stringify({
+            "data": {
                 "N": N,
                 "P": P,
                 "K": K,
@@ -133,10 +135,12 @@ html = """
                 "humidity": humidity,
                 "ph": ph,
                 "rainfall": rainfall
-            });
+            },
+            "model_type": modelType
+        });
 
-            socket.send(message);
-        }
+        socket.send(message);
+    }
     </script>
 </head>
 <body>
