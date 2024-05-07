@@ -246,14 +246,14 @@ async def websocket_endpoint(websocket: WebSocket):
                         actual=None,
                         error=None,
                         model=model_type,
-                        model_type="LogisticRegression_model",
+                        model_type=model_type,
                         data=str(input_data.dict()),
                         data_source="webapp"
                     )
                     db.session.add(new_prediction)
                     db.session.commit()
 
-                await websocket.send_text(f"Prediction: {prediction}")
+                await websocket.send_text(prediction)
             except Exception as e:
                 await websocket.send_text(f"Error: {str(e)}")
     except WebSocketDisconnect:
