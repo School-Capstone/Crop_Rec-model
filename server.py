@@ -7,6 +7,8 @@ from schema import Predictions as SchemaPredictions
 from models import Predictions as ModelPredictions
 import os
 from datetime import datetime
+import json
+
 
 
 from models import Users  # Assuming you have a Users model defined in models.py
