@@ -210,6 +210,7 @@ async def websocket_endpoint(websocket: WebSocket):
                         data=str(input_data.dict()),
                         data_source="webapp"
                     )
+                    print(new_prediction)
                     db.session.add(new_prediction) 
                     db.session.commit()
 
@@ -219,7 +220,9 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         # Handle WebSocket disconnection
         print("Client disconnected")
-        # Perform any necessary cleanup or handle the disconnection
+        # Perform any necessary cleanup or handle the disconnection as needed
+        await websocket.close()
+        
 
 
         
