@@ -212,8 +212,15 @@ async def websocket_endpoint(websocket: WebSocket):
                     )
                     db.session.add(new_prediction) 
                     db.session.commit()
+                    
+                         # Get the ID of the newly saved prediction
+                    prediction_id = new_prediction.id
 
-                await websocket.send_text(prediction)
+                # Send response back to client including prediction and its ID
+                response = {"prediction": prediction, "prediction_id": prediction_id}
+                await websocket.send_text(json.dumps(response))
+
+                # await websocket.send_text(prediction)
             except Exception as e:
                 await websocket.send_text(f"Error: {str(e)}")
     except WebSocketDisconnect:
