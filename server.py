@@ -272,6 +272,8 @@ async def get_predictions():
     with db():
         # Query all predictions from the database
         predictions = db.session.query(ModelPredictions).all()
+        if not predictions:
+            return {"message": "No predictions found"}
         # Serialize predictions into a dictionary
         serialized_predictions = []
         for prediction in predictions:
@@ -287,3 +289,26 @@ async def get_predictions():
                 "data_source": prediction.data_source
             })
         return serialized_predictions
+
+@app.get("/predictions/{prediction_id}")
+async def get_prediction_by_id(prediction_id: int):
+    # Create a session context
+    with db():
+        # Query the prediction by ID from the database
+        prediction = db.session.query(ModelPredictions).filter_by(id=prediction_id).first()
+        if prediction:
+            # Serialize the prediction into a dictionary
+            serialized_prediction = {
+                "id": prediction.id,
+                "date": prediction.date,
+                "prediction": prediction.prediction,
+                "actual": prediction.actual,
+                "error": prediction.error,
+                "model": prediction.model,
+                "model_type": prediction.model_type,
+                "data": prediction.data,
+                "data_source": prediction.data_source
+            }
+            return serialized_prediction
+        else:
+            return {"message": "Prediction not found"}
