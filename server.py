@@ -169,47 +169,6 @@ async def get():
     return HTMLResponse(html)
 
 
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: WebSocket):
-#     await websocket.accept()
-#     while True:
-#         data = await websocket.receive_text()
-#         try:
-#             input_data = model_input.parse_raw(data)
-#             input_object = {
-#                 "N": input_data.N,
-#                 "P": input_data.P,
-#                 "K": input_data.K,
-#                 "temperature": input_data.temperature,
-#                 "humidity": input_data.humidity,
-#                 "ph": input_data.ph,
-#                 "rainfall": input_data.rainfall
-#             }
-#             input_list = [input_data.N, input_data.P, input_data.K, input_data.temperature,
-#                           input_data.humidity, input_data.ph, input_data.rainfall]
-#             predict_crop = model.predict([input_list])
-#             prediction = predict_crop.tolist()[0]
-
-#             # Create a session context
-#             with db():
-#                 # Save the prediction to the database
-#                 new_prediction = ModelPredictions(
-#                     # user_id="current_user.id",
-#                     date=str(datetime.now()),
-#                     prediction=prediction,
-#                     actual=None,
-#                     error=None,
-#                     model="CropRecom_LogisticRegresion",
-#                     model_type="LogisticRegression_model",
-#                     data=str(input_object),
-#                     data_source="webapp"
-#                 )
-#                 db.session.add(new_prediction)
-#                 db.session.commit()
-
-#             await websocket.send_text(f"Prediction: {prediction}")
-#         except Exception as e:
-#             await websocket.send_text(f"Error: {str(e)}")
 
 
 # Set default model type
