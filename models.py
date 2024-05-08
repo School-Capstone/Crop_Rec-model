@@ -3,13 +3,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
+from sqlalchemy.dialects.postgresql import UUID
 
 Base = declarative_base()
 
 
 class Predictions(Base):
     __tablename__ = 'predictions'
-    id = Column(String(36), primary_key=True, index=True, default=str(uuid.uuid4))
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     # user_id = Column(Integer, ForeignKey('users.id'))  # Add this line
     date = Column(DateTime, default=func.now())
     prediction = Column(String(100))
