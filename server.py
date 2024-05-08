@@ -258,7 +258,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     db.session.add(new_prediction)
                     db.session.commit()
 
-                await websocket.send_text(f"Prediction: {prediction}")
+                await websocket.send_text(f"Prediction ID: {new_prediction.id}, Prediction: {prediction}")
             except Exception as e:
                 await websocket.send_text(f"Error: {str(e)}")
     except WebSocketDisconnect:

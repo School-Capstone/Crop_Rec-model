@@ -8,7 +8,7 @@ Base = declarative_base()
 
 class Predictions(Base):
     __tablename__ = 'predictions'
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String(36), primary_key=True, index=True, default=str(uuid.uuid4))
     # user_id = Column(Integer, ForeignKey('users.id'))  # Add this line
     date = Column(DateTime, default=func.now())
     prediction = Column(String(100))
