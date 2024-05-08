@@ -10,7 +10,7 @@ Base = declarative_base()
 
 class Predictions(Base):
     __tablename__ = 'predictions'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(String(36), primary_key=True, index=True, default=lambda: "PRDCTN-" + str(uuid.uuid4())[:4] + "-" + str(uuid.uuid4())[-5:])
     # user_id = Column(Integer, ForeignKey('users.id'))  # Add this line
     date = Column(DateTime, default=func.now())
     prediction = Column(String(100))
