@@ -118,6 +118,7 @@ html = """
         };
 
 function sendMessage() {
+        id = "CROP-" + str(Math.floor(Math.random() * 1000000));
         var N = parseFloat(document.getElementById("NInput").value);
         var P = parseFloat(document.getElementById("PInput").value);
         var K = parseFloat(document.getElementById("KInput").value);
@@ -129,6 +130,7 @@ function sendMessage() {
 
         var message = JSON.stringify({
             "data": {
+                id: id,
                 "N": N,
                 "P": P,
                 "K": K,
@@ -201,6 +203,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 # Save prediction to the database
                 with db():
                     new_prediction = ModelPredictions(
+                        id=message.get("id"),
                         date=str(datetime.now()),
                         prediction=prediction,
                         actual=None,
@@ -292,7 +295,7 @@ async def get_predictions():
         return serialized_predictions
 
 @app.get("/predictions/{prediction_id}")
-async def get_prediction_by_id(prediction_id: int):
+async def get_prediction_by_id(prediction_id: str):
     # Create a session context
     with db():
         # Query the prediction by ID from the database
