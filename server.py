@@ -210,7 +210,6 @@ async def websocket_endpoint(websocket: WebSocket):
                         data=str(input_data.dict()),
                         data_source="webapp"
                     )
-                    print("ekhrwekhrwekjrhwkjer==================>>>>>>>>>>>>" + new_prediction)
                     db.session.add(new_prediction) 
                     db.session.commit()
 
