@@ -306,7 +306,7 @@ async def get_prediction_by_id(prediction_id: int):
                 "error": prediction.error,
                 "model": prediction.model,
                 "model_type": prediction.model_type,
-                "data": prediction.data,
+                "data": json.loads(prediction.data),
                 "data_source": prediction.data_source
             }
             return serialized_prediction
